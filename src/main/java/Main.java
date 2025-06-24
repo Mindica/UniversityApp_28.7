@@ -1,16 +1,23 @@
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
-
 import java.io.IOException;
+import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.LogManager;
+import java.util.logging.Logger;
 
 public class Main {
 
-    private static final Logger logger = LogManager.getLogger(Main.class.getName());
+    private static final Logger logger = Logger.getLogger(Main.class.getName());
 
     public static void main(String[] args) {
-        logger.info("Application started");
+        try (InputStream config = Main.class.getClassLoader().getResourceAsStream("logging.properties")) {
+            LogManager.getLogManager().readConfiguration(config);
+        } catch (IOException e) {
+            System.err.println("Could not load logging configuration: " + e);
+        }
+
+        logger.log(Level.INFO, "Application started");
 
         try {
             University university1 = new University()
@@ -44,29 +51,29 @@ public class Main {
             List<University> universities = new ArrayList<>();
             universities.add(university1);
             universities.add(university2);
-            logger.info("Created a list of universities. Size: {}", universities.size());
+            logger.log(Level.INFO, "Created a list of universities. Size: {0}", universities.size());
 
             List<Student> students = new ArrayList<>();
             students.add(student1);
             students.add(student2);
-            logger.info("Created a list of students. Size: {}", students.size());
+            logger.log(Level.INFO, "Created a list of students. Size: {0}", students.size());
 
             // Сбор статистики
             List<Statistics> statistics = CollectionUtil.collectStatistics(students, universities);
-            logger.info("Collected statistics. Number of statistics records: {}", statistics.size());
+            logger.log(Level.INFO, "Collected statistics. Number of statistics records: {0}", statistics.size());
 
             // Генерация Excel-файла
             String excelFilePath = "statistics.xlsx";
-            logger.info("Generating Excel file: {}", excelFilePath);
+            logger.log(Level.INFO, "Generating Excel file: {0}", excelFilePath);
             XlsWriter.generateExcel(statistics, excelFilePath);
-            logger.info("Excel file generated successfully: {}", excelFilePath);
+            logger.log(Level.INFO, "Excel file generated successfully: {0}", excelFilePath);
 
         } catch (IOException e) {
-            logger.error("Error during Excel file operations: ", e);
+            logger.log(Level.SEVERE, "Error during Excel file operations: ", e);
         } catch (Exception e) {
-            logger.error("An unexpected error occurred: ", e);
+            logger.log(Level.SEVERE, "An unexpected error occurred: ", e);
         } finally {
-            logger.info("Application finished");
+            logger.log(Level.INFO, "Application finished");
         }
     }
 }

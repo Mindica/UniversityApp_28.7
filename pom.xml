@@ -14,7 +14,6 @@
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <poi.version>5.4.1</poi.version>
         <commons.lang.version>3.17.0</commons.lang.version>
-        <log4j2.version>2.25.0</log4j2.version>
         <jackson.version>2.19.0</jackson.version>
     </properties>
 
@@ -51,18 +50,6 @@
             <groupId>com.google.code.gson</groupId>
             <artifactId>gson</artifactId>
             <version>2.10.1</version>
-        </dependency>
-
-        <!-- Logging (Log4j2 without SLF4J) -->
-        <dependency>
-            <groupId>org.apache.logging.log4j</groupId>
-            <artifactId>log4j-api</artifactId>
-            <version>${log4j2.version}</version>
-        </dependency>
-        <dependency>
-            <groupId>org.apache.logging.log4j</groupId>
-            <artifactId>log4j-core</artifactId>
-            <version>${log4j2.version}</version>
         </dependency>
 
         <!-- JUnit (for Unit Testing) -->
